@@ -1,0 +1,7 @@
+quarkus.datasource.devservices.enabled=
+quarkus.datasource.db-kind=
+quarkus.datasource.username=
+quarkus.datasource.password=
+quarkus.datasource.jdbc.url=
+quarkus.http.port=
+quarkus.live-reload.enabled=

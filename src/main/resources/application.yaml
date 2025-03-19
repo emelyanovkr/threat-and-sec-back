@@ -1,9 +1,0 @@
-quarkus:
-  datasource:
-    devservices:
-      enabled: false
-    db-kind: postgresql
-    username: savenkova
-    password: savenkova
-  http:
-    port: 8000
