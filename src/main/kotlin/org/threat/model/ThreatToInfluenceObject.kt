@@ -1,5 +1,6 @@
 package org.threat.model
 
+import io.quarkus.hibernate.orm.panache.kotlin.PanacheCompanion
 import io.quarkus.hibernate.orm.panache.kotlin.PanacheEntityBase
 import jakarta.persistence.*
 
@@ -35,4 +36,11 @@ data class ThreatToInfluenceObject(
         ThreatInfo(),
         InfluenceObject()
     )
+
+    companion object : PanacheCompanion<ThreatToInfluenceObject> {
+        fun findExisting(threat: ThreatInfo, influenceObject: InfluenceObject): ThreatToInfluenceObject? {
+            return find("threat = ?1 and influenceObject = ?2", threat, influenceObject).firstResult()
+        }
+    }
+
 }

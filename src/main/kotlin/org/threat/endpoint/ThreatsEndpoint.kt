@@ -13,7 +13,7 @@ import org.threat.service.FetchThreatsService
 @ApplicationScoped
 class ThreatsEndpoint(private val fetchThreatsService: FetchThreatsService) {
 
-    val FETCH_THREATS_URL_FROM_FSTEC = "https://bdu.fstec.ru/files/documents/thrlist.xlsx"
+    private val FETCH_THREATS_URL_FROM_FSTEC = "https://bdu.fstec.ru/files/documents/thrlist.xlsx"
 
     @GET
     @Consumes(MediaType.APPLICATION_JSON)

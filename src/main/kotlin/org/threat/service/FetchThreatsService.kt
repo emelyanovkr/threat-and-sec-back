@@ -1,10 +1,8 @@
 package org.threat.service
 
-import io.quarkus.logging.Log
 import jakarta.enterprise.context.ApplicationScoped
 import jakarta.transaction.Transactional
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
-import org.slf4j.LoggerFactory
 import org.threat.exception.FetchThreatsException
 import org.threat.model.InfluenceObject
 import org.threat.model.ThreatInfo
@@ -30,28 +28,45 @@ class FetchThreatsService {
             val name = row.getCell(1)?.stringCellValue ?: continue
             val description = row.getCell(2)?.stringCellValue ?: ""
             val objectsRaw = row.getCell(4)?.stringCellValue ?: ""
-            val objectsList =
+
+            val specialPattern = Regex(
+                "(;)" +
+                        "|(Программное\\s+обеспечение\\s*\\(программы\\),)" +
+                        "|(,\\s*реализующие)" +
+                        "|(,\\s*использующее\\s+)" +
+                        "|(\\([^()]*,[^()]*\\))"
+            )
+
+            val objectsList = if (specialPattern.containsMatchIn(objectsRaw)) {
+                objectsRaw.split(";").map { objectName ->
+                    objectName.trim().replaceFirstChar { it.titlecase(Locale.forLanguageTag("ru-RU")) }
+                }
+            } else {
                 objectsRaw.split(",").map { objectName ->
                     objectName.trim().replaceFirstChar { it.titlecase(Locale.forLanguageTag("ru-RU")) }
                 }
+            }
 
             val threat = ThreatInfo.findById(threatId) ?: ThreatInfo(name = name, description = description).apply {
                 id = threatId
                 persist()
             }
 
-
             for (objectName in objectsList) {
-                val influenceObject = InfluenceObject.findByName(objectName)
+                val influenceObject = InfluenceObject.findByNameOrAlias(objectName)
                 if (influenceObject != null) {
-                    val relation = ThreatToInfluenceObject(threat = threat, influenceObject = influenceObject)
-                    relation.persist()
-                    threatsCount++
+                    val existingRelation = ThreatToInfluenceObject.findExisting(threat, influenceObject)
+                    if (existingRelation == null) {
+                        val relation = ThreatToInfluenceObject(threat = threat, influenceObject = influenceObject)
+                        relation.persist()
+                        threatsCount++
+                    }
                 } else {
                     println("Не найден объект воздействия с именем: $objectName для угрозы $threatId - ${threat.name}")
                 }
             }
         }
+
         workBook.close()
         return threatsCount
     }
