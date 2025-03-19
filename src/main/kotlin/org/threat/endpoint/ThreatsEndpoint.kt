@@ -1,25 +1,28 @@
 package org.threat.endpoint
 
 import jakarta.enterprise.context.ApplicationScoped
-import jakarta.ws.rs.Consumes
-import jakarta.ws.rs.GET
-import jakarta.ws.rs.Path
-import jakarta.ws.rs.Produces
+import jakarta.ws.rs.*
 import jakarta.ws.rs.core.MediaType
 import jakarta.ws.rs.core.Response
 import org.threat.service.FetchThreatsService
+import org.threat.service.RelevantThreatsService
 
 @Path("/api")
 @ApplicationScoped
-class ThreatsEndpoint(private val fetchThreatsService: FetchThreatsService) {
+class ThreatsEndpoint(
+    private val fetchThreatsService: FetchThreatsService,
+    private val relevantThreatsService: RelevantThreatsService
+) {
 
     private val FETCH_THREATS_URL_FROM_FSTEC = "https://bdu.fstec.ru/files/documents/thrlist.xlsx"
 
-    @GET
-    @Consumes(MediaType.APPLICATION_JSON)
+    @POST
+    @Path("/relevant-threats")
     @Produces(MediaType.APPLICATION_JSON)
-    fun getRelevantThreats() : Response {
-        return Response.ok("Hello, something").build()
+    @Consumes(MediaType.APPLICATION_JSON)
+    fun getRelevantThreats(influenceObjects: List<String>): Response {
+        val relevantThreats = relevantThreatsService.getRelevantThreats(influenceObjects)
+        return Response.ok(relevantThreats).build()
     }
 
     @GET
