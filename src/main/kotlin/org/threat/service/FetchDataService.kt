@@ -4,9 +4,7 @@ import jakarta.enterprise.context.ApplicationScoped
 import jakarta.transaction.Transactional
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.threat.exception.FetchThreatsException
-import org.threat.model.InfluenceObject
-import org.threat.model.ThreatInfo
-import org.threat.model.ThreatToInfluenceObject
+import org.threat.model.*
 import java.io.ByteArrayInputStream
 import java.net.URI
 import java.net.http.HttpClient
@@ -15,7 +13,7 @@ import java.net.http.HttpResponse
 import java.util.*
 
 @ApplicationScoped
-class FetchThreatsService {
+class FetchDataService {
 
     private fun parseExcelFile(fileBytes: ByteArray): Int {
         val workBook = XSSFWorkbook(ByteArrayInputStream(fileBytes))
@@ -84,4 +82,7 @@ class FetchThreatsService {
             throw FetchThreatsException("Не удалось получить данные об угрозах, статус - ${response.statusCode()}")
         }
     }
+
+    @Transactional
+    fun getAllTacticsAndTechniques(): List<TacticToTechnique> = TacticToTechnique.findAll().list()
 }
