@@ -1,4 +1,4 @@
-package org.threat.model
+package org.threat.model.threats
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder
 import io.quarkus.hibernate.orm.panache.kotlin.PanacheCompanion

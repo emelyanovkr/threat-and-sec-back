@@ -1,4 +1,4 @@
-package org.threat.model
+package org.threat.model.tactics
 
 import io.quarkus.hibernate.orm.panache.kotlin.PanacheCompanion
 import io.quarkus.hibernate.orm.panache.kotlin.PanacheEntityBase

@@ -1,10 +1,10 @@
-package org.threat.model
+package org.threat.model.tactics
 
 import jakarta.persistence.Embeddable
 import java.io.Serializable
 
 @Embeddable
-class TacticToTechniqueId(
+data class TacticToTechniqueId(
     var tacticId: Long = 0,
     val techniqueId: Long = 0
 ) : Serializable
