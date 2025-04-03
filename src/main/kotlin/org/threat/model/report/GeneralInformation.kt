@@ -14,14 +14,6 @@ data class GeneralInformation(
     var kiiCategoryPick: String? = null,
     var kiiCategoryResult: String? = null,
 ) {
-    enum class SystemCategory(private val systemName: String) {
-        GIS("ГИС"),
-        ISPDN("ИСПДн"),
-        KII("КИИ");
-
-        override fun toString() = systemName
-    }
-
     enum class GisSignificanceOptions(private val significance: String) {
         FIRST("первый"),
         SECOND("второй"),

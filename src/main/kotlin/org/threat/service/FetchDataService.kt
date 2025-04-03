@@ -4,6 +4,9 @@ import jakarta.enterprise.context.ApplicationScoped
 import jakarta.transaction.Transactional
 import org.threat.excel.ExcelOperations
 import org.threat.exception.FetchThreatsException
+import org.threat.model.report.DataReplacementEntity
+import org.threat.model.report.SystemCategory
+import org.threat.model.report.SystemCategoryEntity
 import org.threat.model.tactics.TacticToTechnique
 import java.net.URI
 import java.net.http.HttpClient
@@ -12,6 +15,19 @@ import java.net.http.HttpResponse
 
 @ApplicationScoped
 class FetchDataService {
+
+    private fun getCategoryEntity(systemCategory: SystemCategory): SystemCategoryEntity? {
+        return SystemCategoryEntity.find("name", systemCategory.toString()).firstResult()
+    }
+
+    @Transactional
+    fun getReplacementForPlaceholdersOfCategory(systemCategory: SystemCategory): Map<String, String> {
+        val systemCategoryEntity = getCategoryEntity(systemCategory)
+        val replacements = DataReplacementEntity.find("category", systemCategoryEntity!!).list()
+        val placeholdersMap = replacements.associate { it.placeholder to it.value }
+
+        return placeholdersMap
+    }
 
     @Transactional
     fun acquireActualThreats(fetchThreatsUrl: String): Int {
