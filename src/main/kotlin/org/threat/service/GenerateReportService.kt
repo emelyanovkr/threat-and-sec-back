@@ -5,8 +5,9 @@ import jakarta.enterprise.context.ApplicationScoped
 import org.docx4j.model.datastorage.migration.VariablePrepare
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage
 import org.docx4j.org.apache.xml.serializer.utils.ResourceUtils
-import org.threat.model.report.ThreatReport
+import org.threat.model.ThreatReport
 import org.threat.util.ReflectionUtils.toMap
+import org.threat.word.PrepareOffenders
 import org.threat.word.TablesProcessing
 import java.io.File
 import java.time.LocalDate
@@ -30,19 +31,23 @@ class GenerateReportService(var fetchDataService: FetchDataService) {
 
     fun generateReport(threatReport: ThreatReport) {
         val replacementPlaceholders =
-            fetchDataService.getReplacementForPlaceholdersOfCategory(threatReport.generalInformation?.category!!)
+            fetchDataService.getReplacementForPlaceholdersOfCategory(threatReport.generalInformation.category)
 
         val templateFile = ResourceUtils.getResource(TEMPLATE_FULL_NAME)
         val wordProcessingPackage = WordprocessingMLPackage.load(templateFile)
 
         VariablePrepare.prepare(wordProcessingPackage)
 
+        // обработка данных внутри таблиц
         TablesProcessing.replaceVariablesInTable(wordProcessingPackage, threatReport)
 
-        val overallMapForReplacement = replacementPlaceholders + threatReport.generalInformation?.toMap()!!
+        PrepareOffenders.insertViolatorsInformation(wordProcessingPackage, threatReport.violatorsInformation)
 
+        val overallMapForReplacement =
+            replacementPlaceholders + threatReport.generalInformation.toMap()
         val finalParamsMap = calculateParams(overallMapForReplacement)
 
+        // замена остальных параметров по всему документу
         wordProcessingPackage.mainDocumentPart.variableReplace(finalParamsMap)
 
         val outputFile = File("src/main/resources/generated/${TEMPLATE_NAME}_${LocalDate.now()}$TEMPLATE_EXTENSION")

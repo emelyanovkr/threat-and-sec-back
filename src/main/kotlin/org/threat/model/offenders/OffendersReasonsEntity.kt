@@ -1,18 +1,19 @@
-package org.threat.model.report
+package org.threat.model.offenders
 
+import io.quarkus.hibernate.orm.panache.kotlin.PanacheCompanion
 import io.quarkus.hibernate.orm.panache.kotlin.PanacheEntityBase
 import jakarta.persistence.*
-import jakarta.validation.constraints.NotNull
 
 @Entity
 @Table(name = "offenders_reasons")
 @SequenceGenerator(name = "offender_reasons_seq", sequenceName = "offenders_reasons_id_seq")
 class OffendersReasonsEntity(
-    @NotNull
-    @Column(unique = true)
-    var offender: String = "",
 
-    @NotNull
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "offender", nullable = false)
+    var offender: Offenders? = null,
+
+    @Column(nullable = false)
     var reason: String = ""
 ) : PanacheEntityBase {
 
@@ -20,4 +21,5 @@ class OffendersReasonsEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
 
+    companion object : PanacheCompanion<OffendersReasonsEntity>
 }

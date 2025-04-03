@@ -1,23 +1,24 @@
 package org.threat.model.report
 
 data class GeneralInformation(
-    var customerName: String? = null,
-    var category: SystemCategory? = null,
-    var significance: GisSignificanceOptions? = null,
-    var systemScale: GisScaleOptions? = null,
-    var pdnCategory: IspdnCategoryOptions? = null,
-    var ownWorker: Boolean? = null,
-    var subjectCount: SubjectCountOptions? = null,
-    var threatType: ThreatTypeOptions? = null,
-    var kiiLevel: KiiLevelOptions? = null,
-    var kiiSignificanceArea: KiiSignificanceOptions? = null,
-    var kiiCategoryPick: String? = null,
-    var kiiCategoryResult: String? = null,
+    var customerName: String = "",
+    var category: SystemCategory = SystemCategory.NONE,
+    var significance: GisSignificanceOptions = GisSignificanceOptions.NONE,
+    var systemScale: GisScaleOptions = GisScaleOptions.NONE,
+    var pdnCategory: IspdnCategoryOptions = IspdnCategoryOptions.NONE,
+    var ownWorker: Boolean = false,
+    var subjectCount: SubjectCountOptions = SubjectCountOptions.NONE,
+    var threatType: ThreatTypeOptions = ThreatTypeOptions.NONE,
+    var kiiLevel: KiiLevelOptions = KiiLevelOptions.NONE,
+    var kiiSignificanceArea: KiiSignificanceOptions = KiiSignificanceOptions.NONE,
+    var kiiCategoryPick: String = "",
+    var kiiCategoryResult: String = ""
 ) {
     enum class GisSignificanceOptions(private val significance: String) {
         FIRST("первый"),
         SECOND("второй"),
-        THIRD("третий");
+        THIRD("третий"),
+        NONE("NOT_AVAILABLE");
 
         override fun toString() = significance
     }
@@ -25,7 +26,8 @@ data class GeneralInformation(
     enum class GisScaleOptions(private val scale: String) {
         FEDERAL("федеральный"),
         REGIONAL("региональный"),
-        OBJECT("объектовый");
+        OBJECT("объектовый"),
+        NONE("NOT_AVAILABLE");
 
         override fun toString() = scale
     }
@@ -34,14 +36,16 @@ data class GeneralInformation(
         SPEICAL("специальные"),
         BIOMETRICAL("биометрические"),
         SOCIAL("общественные"),
-        OTHER("иные");
+        OTHER("иные"),
+        NONE("NOT_AVAILABLE");
 
         override fun toString() = category
     }
 
     enum class SubjectCountOptions(private val count: String) {
         MORE100("более 100"),
-        LESS100("менее 100");
+        LESS100("менее 100"),
+        NONE("NOT_AVAILABLE");
 
         override fun toString() = count
     }
@@ -49,7 +53,8 @@ data class GeneralInformation(
     enum class ThreatTypeOptions(private val threatType: String) {
         FIRST("1"),
         SECOND("2"),
-        THIRD("3");
+        THIRD("3"),
+        NONE("NOT_AVAILABLE");
 
         override fun toString() = threatType
     }
@@ -59,7 +64,8 @@ data class GeneralInformation(
         LEVEL2("уровень 2"),
         LEVEL3("уровень 3"),
         LEVEL4("уровень 4"),
-        LEVEL5("уровень 5");
+        LEVEL5("уровень 5"),
+        NONE("NOT_AVAILABLE");
 
         override fun toString() = kiiLevel
     }
@@ -69,7 +75,8 @@ data class GeneralInformation(
         POLITICAL("политическая значимость"),
         ECONOMIC("экономическая значимость"),
         ECOLOGICAL("экологическая значимость"),
-        DEFENSE("значимость для обеспечения обороны страны, безопасности государства и правопорядка");
+        DEFENSE("значимость для обеспечения обороны страны, безопасности государства и правопорядка"),
+        NONE("NOT_AVAILABLE");
 
         override fun toString() = significance
     }

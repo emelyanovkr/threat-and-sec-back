@@ -7,7 +7,7 @@ import org.docx4j.wml.Text
 import org.docx4j.wml.Tr
 import org.threat.exception.NotFoundTablesInTemplate
 import org.threat.exception.NotFoundTablesWithPlaceholders
-import org.threat.model.report.ThreatReport
+import org.threat.model.ThreatReport
 import org.threat.util.ReflectionUtils
 import org.threat.util.ReflectionUtils.toMap
 
