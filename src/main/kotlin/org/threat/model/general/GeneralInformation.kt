@@ -1,4 +1,4 @@
-package org.threat.model.report
+package org.threat.model.general
 
 data class GeneralInformation(
     var customerName: String = "",

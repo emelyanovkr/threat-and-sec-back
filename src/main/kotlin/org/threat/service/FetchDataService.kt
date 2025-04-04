@@ -4,9 +4,9 @@ import jakarta.enterprise.context.ApplicationScoped
 import jakarta.transaction.Transactional
 import org.threat.excel.ExcelOperations
 import org.threat.exception.FetchThreatsException
-import org.threat.model.report.DataReplacementEntity
-import org.threat.model.report.SystemCategory
-import org.threat.model.report.SystemCategoryEntity
+import org.threat.model.general.DataReplacementEntity
+import org.threat.model.general.SystemCategory
+import org.threat.model.general.SystemCategoryEntity
 import org.threat.model.tactics.TacticToTechnique
 import java.net.URI
 import java.net.http.HttpClient

@@ -6,8 +6,10 @@ import org.docx4j.model.datastorage.migration.VariablePrepare
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage
 import org.docx4j.org.apache.xml.serializer.utils.ResourceUtils
 import org.threat.model.ThreatReport
+import org.threat.model.offenders.OffendersType
 import org.threat.util.ReflectionUtils.toMap
 import org.threat.word.PrepareOffenders
+import org.threat.word.PrepareThreatMethods
 import org.threat.word.TablesProcessing
 import java.io.File
 import java.time.LocalDate
@@ -41,7 +43,22 @@ class GenerateReportService(var fetchDataService: FetchDataService) {
         // обработка данных внутри таблиц
         TablesProcessing.replaceVariablesInTable(wordProcessingPackage, threatReport)
 
-        PrepareOffenders.insertViolatorsInformation(wordProcessingPackage, threatReport.violatorsInformation)
+        // вставка данных о не выбранных нарушителях
+        PrepareOffenders.insertViolatorsInformation(
+            wordProcessingPackage,
+            threatReport.violatorsInformationExcluded,
+            OffendersType.EXCLUDED
+        )
+
+        // вставка данных о выбранных нарушителях
+        PrepareOffenders.insertViolatorsInformation(
+            wordProcessingPackage,
+            threatReport.violatorsInformationChosen,
+            OffendersType.CHOSEN
+        )
+
+        // вставка способов реализации угроз
+        PrepareThreatMethods.insertThreatMethods(wordProcessingPackage, threatReport.threatsExecutionMethods)
 
         val overallMapForReplacement =
             replacementPlaceholders + threatReport.generalInformation.toMap()

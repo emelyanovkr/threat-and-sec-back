@@ -1,4 +1,4 @@
-package org.threat.model.report
+package org.threat.model.general
 
 data class InfluenceObject(
     var objectName: String? = null,

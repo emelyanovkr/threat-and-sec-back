@@ -1,4 +1,4 @@
-package org.threat.model.report
+package org.threat.model.general
 
 import io.quarkus.hibernate.orm.panache.kotlin.PanacheCompanion
 import io.quarkus.hibernate.orm.panache.kotlin.PanacheEntity
