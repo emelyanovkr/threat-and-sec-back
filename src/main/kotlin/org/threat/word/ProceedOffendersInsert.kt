@@ -1,12 +1,9 @@
 package org.threat.word
 
-import org.docx4j.XmlUtils
 import org.docx4j.jaxb.Context
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage
 import org.docx4j.openpackaging.parts.WordprocessingML.NumberingDefinitionsPart
-import org.docx4j.wml.ObjectFactory
 import org.docx4j.wml.P
-import org.docx4j.wml.PPr
 import org.docx4j.wml.Text
 import org.threat.model.offenders.Offenders
 import org.threat.model.offenders.OffendersReasonsEntity
@@ -14,7 +11,7 @@ import org.threat.model.offenders.OffendersType
 import org.threat.util.ReflectionUtils
 import java.math.BigInteger
 
-object PrepareOffenders {
+object ProceedOffendersInsert {
     private fun getReasonForOffender(offender: Offenders): String {
         val offenderFromDb = Offenders.find("name", offender.name).firstResult()
         if (offenderFromDb == null) {
@@ -61,10 +58,16 @@ object PrepareOffenders {
 
             val factory = Context.getWmlObjectFactory()
 
-            val numberedParagraphs = violators.mapIndexed { _, offender ->
+            val numberedParagraphs = violators.mapIndexed { index, offender ->
                 val reason = getReasonForOffender(offender)
                 val textValue = "${offender.name} $reason"
-                ParagraphCreationUtil.createNumberedBulletedParagraphWithStyle(factory, textValue, placeholderStyle, newNumId)
+                ParagraphCreationUtil.createNumberedBulletedParagraphWithStyleAndPunctuation(
+                    factory,
+                    textValue,
+                    placeholderStyle,
+                    newNumId,
+                    index == violators.lastIndex
+                )
             }
 
             contentList.addAll(idx, numberedParagraphs)

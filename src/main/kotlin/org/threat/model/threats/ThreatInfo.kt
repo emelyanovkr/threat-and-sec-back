@@ -26,4 +26,12 @@ class ThreatInfo(
             ).list()
         }
     }
+
+    fun toDisplayMap(): Map<String, String> {
+        return mapOf(
+            "threatId" to "УБИ.${this.id}",
+            "threatName" to this.name,
+            "threatApply" to "возможна"
+        )
+    }
 }

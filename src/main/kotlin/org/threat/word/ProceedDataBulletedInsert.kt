@@ -4,19 +4,23 @@ import org.docx4j.jaxb.Context
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage
 import org.docx4j.wml.P
 import org.docx4j.wml.Text
-import org.threat.model.threats.ThreatsExecutionMethod
+import org.threat.model.threats.DataInsertionType
 import org.threat.util.ReflectionUtils
 import java.math.BigInteger
 
-object PrepareThreatMethods {
+object ProceedDataBulletedInsert {
 
-    fun insertThreatMethods(wordProcessingPackage: WordprocessingMLPackage, methods: List<ThreatsExecutionMethod>) {
+    fun insertBulletedData(
+        wordProcessingPackage: WordprocessingMLPackage,
+        methods: List<String>,
+        dataInsertionType: DataInsertionType
+    ) {
         val mainPart = wordProcessingPackage.mainDocumentPart
 
         val paragraphs = ReflectionUtils.getAllElementsOfType(mainPart.jaxbElement, P::class.java)
         val placeholderParagraph = paragraphs.firstOrNull { p ->
             ReflectionUtils.getAllElementsOfType(p, Text::class.java)
-                .any { it.value.contains("\${threats_execution_methods}") }
+                .any { it.value.contains(dataInsertionType.placeholder) }
         }
 
         if (placeholderParagraph != null) {
@@ -29,12 +33,13 @@ object PrepareThreatMethods {
             val factory = Context.getWmlObjectFactory()
 
             val bulletNumId = BigInteger.valueOf(3)
-            val bulletParagraphs = methods.map { method ->
-                ParagraphCreationUtil.createNumberedBulletedParagraphWithStyle(
+            val bulletParagraphs = methods.mapIndexed { index, method ->
+                ParagraphCreationUtil.createNumberedBulletedParagraphWithStyleAndPunctuation(
                     factory,
-                    method.name,
+                    method,
                     placeholderStyle,
-                    bulletNumId
+                    bulletNumId,
+                    index == methods.lastIndex
                 )
             }
 

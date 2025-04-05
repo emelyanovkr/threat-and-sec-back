@@ -1,5 +1,6 @@
 package org.threat.word
 
+import org.apache.poi.ss.formula.functions.T
 import org.docx4j.XmlUtils
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage
 import org.docx4j.wml.Tbl
@@ -57,16 +58,16 @@ object TablesProcessing {
             throw NotFoundTablesInTemplate("No tables in template")
         }
 
-        threatReport.networkTable?.let {
-            updateTableWithData(allTables, "\${index_network}", it) { entity, index ->
-                entity.toMap() + ("index_network" to (index + 1).toString().plus("."))
-            }
+        updateTableWithData(allTables, "\${indexNetwork}", threatReport.networkTable) { entity, index ->
+            entity.toMap() + ("indexNetwork" to (index + 1).toString().plus("."))
         }
 
-        threatReport.influenceObjects?.let {
-            updateTableWithData(allTables, "\${index_object}", it) { entity, index ->
-                entity.toDisplayMap() + ("index_object" to (index + 1).toString().plus("."))
-            }
+        updateTableWithData(allTables, "\${indexObject}", threatReport.influenceObjects) { entity, index ->
+            entity.toDisplayMap() + ("indexObject" to (index + 1).toString().plus("."))
+        }
+
+        updateTableWithData(allTables, "\${indexActualThreats}", threatReport.actualChosenThreats) { entity, index ->
+            entity.toDisplayMap() + ("indexActualThreats" to (index + 1).toString().plus("."))
         }
     }
 

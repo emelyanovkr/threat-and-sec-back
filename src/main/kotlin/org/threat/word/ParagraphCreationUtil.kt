@@ -7,6 +7,19 @@ import org.docx4j.wml.PPr
 import java.math.BigInteger
 
 object ParagraphCreationUtil {
+
+    fun createNumberedBulletedParagraphWithStyleAndPunctuation(
+        factory: ObjectFactory,
+        textValue: String,
+        placeholderStyle: PPr?,
+        newNumId: BigInteger,
+        isLastObject: Boolean
+    ): P {
+        val punctuation = if (isLastObject) "." else ";"
+        val finalText = "$textValue$punctuation"
+        return createNumberedBulletedParagraphWithStyle(factory, finalText, placeholderStyle, newNumId)
+    }
+
     fun createNumberedBulletedParagraphWithStyle(
         factory: ObjectFactory,
         textValue: String,
