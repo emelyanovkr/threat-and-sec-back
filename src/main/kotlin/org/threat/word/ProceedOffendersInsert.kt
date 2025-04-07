@@ -61,7 +61,7 @@ object ProceedOffendersInsert {
             val numberedParagraphs = violators.mapIndexed { index, offender ->
                 val reason = getReasonForOffender(offender)
                 val textValue = "${offender.name} $reason"
-                ParagraphCreationUtil.createNumberedBulletedParagraphWithStyleAndPunctuation(
+                ParagraphCreation.createNumberedBulletedParagraphWithStyleAndPunctuation(
                     factory,
                     textValue,
                     placeholderStyle,

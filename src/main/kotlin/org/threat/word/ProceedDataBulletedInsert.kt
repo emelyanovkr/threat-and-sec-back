@@ -34,7 +34,7 @@ object ProceedDataBulletedInsert {
 
             val bulletNumId = BigInteger.valueOf(3)
             val bulletParagraphs = methods.mapIndexed { index, method ->
-                ParagraphCreationUtil.createNumberedBulletedParagraphWithStyleAndPunctuation(
+                ParagraphCreation.createNumberedBulletedParagraphWithStyleAndPunctuation(
                     factory,
                     method,
                     placeholderStyle,

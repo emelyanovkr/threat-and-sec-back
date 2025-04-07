@@ -6,7 +6,7 @@ import org.docx4j.wml.P
 import org.docx4j.wml.PPr
 import java.math.BigInteger
 
-object ParagraphCreationUtil {
+object ParagraphCreation {
 
     fun createNumberedBulletedParagraphWithStyleAndPunctuation(
         factory: ObjectFactory,
@@ -20,7 +20,7 @@ object ParagraphCreationUtil {
         return createNumberedBulletedParagraphWithStyle(factory, finalText, placeholderStyle, newNumId)
     }
 
-    fun createNumberedBulletedParagraphWithStyle(
+    private fun createNumberedBulletedParagraphWithStyle(
         factory: ObjectFactory,
         textValue: String,
         placeholderStyle: PPr?,

@@ -4,17 +4,21 @@ import jakarta.enterprise.context.ApplicationScoped
 import jakarta.ws.rs.*
 import jakarta.ws.rs.core.MediaType
 import jakarta.ws.rs.core.Response
+import org.threat.dto.SecurityClassRequest
 import org.threat.model.ThreatReport
+import org.threat.model.general.securityclass.BasicDefensiveMeasure
 import org.threat.service.FetchDataService
 import org.threat.service.GenerateReportService
 import org.threat.service.RelevantThreatsService
+import org.threat.service.SecurityClassService
 
 @Path("/api")
 @ApplicationScoped
 class ThreatsEndpoint(
     private val fetchDataService: FetchDataService,
     private val relevantThreatsService: RelevantThreatsService,
-    private val generateReportService: GenerateReportService
+    private val generateReportService: GenerateReportService,
+    private val securityClassService: SecurityClassService,
 ) {
 
     private val FETCH_THREATS_URL_FROM_FSTEC = "https://bdu.fstec.ru/files/documents/thrlist.xlsx"
@@ -53,5 +57,14 @@ class ThreatsEndpoint(
     fun generateModelReport(threatReport: ThreatReport): Response {
         generateReportService.generateReport(threatReport)
         return Response.ok().build()
+    }
+
+    @GET
+    @Path("/defensive-measures")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    fun getBasicDefensiveMeasures(securityClassRequest: SecurityClassRequest): Response {
+        return Response.ok(securityClassService.getDefensiveMeasures(securityClassRequest)).build()
+
     }
 }
