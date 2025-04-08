@@ -59,7 +59,7 @@ class ThreatsEndpoint(
         return Response.ok().build()
     }
 
-    @GET
+    @POST
     @Path("/defensive-measures")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)

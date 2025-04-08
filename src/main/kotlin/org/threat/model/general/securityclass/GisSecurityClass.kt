@@ -3,8 +3,8 @@ package org.threat.model.general.securityclass
 import io.quarkus.hibernate.orm.panache.kotlin.PanacheCompanion
 import io.quarkus.hibernate.orm.panache.kotlin.PanacheEntityBase
 import jakarta.persistence.*
-import org.threat.model.general.GisScaleOptions
-import org.threat.model.general.GisSignificanceOptions
+import org.threat.model.general.input.GisScaleOptions
+import org.threat.model.general.input.GisSignificanceOptions
 
 
 @Entity
@@ -13,7 +13,7 @@ import org.threat.model.general.GisSignificanceOptions
 class GisSecurityClass(
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "region_scale", nullable = false)
     var scale: GisScaleOptions = GisScaleOptions.NONE,
 
     @Enumerated(EnumType.STRING)

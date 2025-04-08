@@ -1,12 +1,12 @@
 package org.threat.dto
 
-import org.threat.model.general.*
+import org.threat.model.general.input.*
 
 data class SecurityClassRequest(
     var systemCategory: SystemCategory? = null,
 
     var gisScale: GisScaleOptions? = null,
-    var gisSignificanceOptions: GisSignificanceOptions? = null,
+    var gisSignificance: GisSignificanceOptions? = null,
 
     var pdCategory: IspdnCategoryOptions? = null,
     var ownWorker: IspdnOwnWorkerOptions? = null,

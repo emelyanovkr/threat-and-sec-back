@@ -4,7 +4,7 @@ import jakarta.enterprise.context.ApplicationScoped
 import jakarta.transaction.Transactional
 import jakarta.ws.rs.NotFoundException
 import org.threat.dto.SecurityClassRequest
-import org.threat.model.general.SystemCategory
+import org.threat.model.general.input.SystemCategory
 import org.threat.model.general.securityclass.BasicDefensiveMeasure
 import org.threat.model.general.securityclass.GisSecurityClass
 import org.threat.model.general.securityclass.IspdnSecurityClass
@@ -16,9 +16,9 @@ class SecurityClassService {
         return when (request.systemCategory) {
             SystemCategory.GIS -> {
                 requireNotNull(request.gisScale) { "ГИС: необходимо указать масштаб системы" }
-                requireNotNull(request.gisSignificanceOptions) { "ГИС: необходимо указать значимость системы " }
-                GisSecurityClass.findByOptions(request.gisScale!!, request.gisSignificanceOptions!!)?.securityClass
-                    ?: throw NotFoundException("не найден класс защищенности для ГИС с параметрами ${request.gisScale} / ${request.gisSignificanceOptions}")
+                requireNotNull(request.gisSignificance) { "ГИС: необходимо указать значимость системы " }
+                GisSecurityClass.findByOptions(request.gisScale!!, request.gisSignificance!!)?.securityClass
+                    ?: throw NotFoundException("не найден класс защищенности для ГИС с параметрами ${request.gisScale} / ${request.gisSignificance}")
             }
 
             SystemCategory.ISPDN -> {

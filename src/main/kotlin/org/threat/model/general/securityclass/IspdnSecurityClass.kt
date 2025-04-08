@@ -3,10 +3,10 @@ package org.threat.model.general.securityclass
 import io.quarkus.hibernate.orm.panache.kotlin.PanacheCompanion
 import io.quarkus.hibernate.orm.panache.kotlin.PanacheEntityBase
 import jakarta.persistence.*
-import org.threat.model.general.IspdnCategoryOptions
-import org.threat.model.general.IspdnOwnWorkerOptions
-import org.threat.model.general.IspdnSubjectCountOptions
-import org.threat.model.general.IspdnThreatTypeOptions
+import org.threat.model.general.input.IspdnCategoryOptions
+import org.threat.model.general.input.IspdnOwnWorkerOptions
+import org.threat.model.general.input.IspdnSubjectCountOptions
+import org.threat.model.general.input.IspdnThreatTypeOptions
 
 @Entity
 @Table(name = "ispdn_security_class")
@@ -18,14 +18,14 @@ class IspdnSecurityClass(
     var pdCategory: IspdnCategoryOptions = IspdnCategoryOptions.NONE,
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "special_data_yes_no", nullable = false)
+    @Column(name = "own_worker_yes_no", nullable = false)
     var ownWorkerYesNo: IspdnOwnWorkerOptions = IspdnOwnWorkerOptions.NONE,
 
     @Enumerated(EnumType.STRING)
     @Column(name = "subjects_count", nullable = false)
     var subjectsCount: IspdnSubjectCountOptions = IspdnSubjectCountOptions.NONE,
 
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     @Column(name = "threat_type", nullable = false)
     var threatType: IspdnThreatTypeOptions = IspdnThreatTypeOptions.NONE,
 

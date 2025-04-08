@@ -1,4 +1,4 @@
-package org.threat.model.general
+package org.threat.model.general.input
 
 enum class SystemCategory(private val systemName: String) {
     GIS("ГИС"),
