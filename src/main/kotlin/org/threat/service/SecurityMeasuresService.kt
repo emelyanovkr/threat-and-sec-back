@@ -5,12 +5,10 @@ import jakarta.transaction.Transactional
 import jakarta.ws.rs.NotFoundException
 import org.threat.dto.SecurityClassRequest
 import org.threat.model.general.input.SystemCategory
-import org.threat.model.general.securityclass.BasicDefensiveMeasure
-import org.threat.model.general.securityclass.GisSecurityClass
-import org.threat.model.general.securityclass.IspdnSecurityClass
+import org.threat.model.general.securityclass.*
 
 @ApplicationScoped
-class SecurityClassService {
+class SecurityMeasuresService {
 
     private fun determineSecurityClass(request: SecurityClassRequest): Int {
         return when (request.systemCategory) {
@@ -46,5 +44,13 @@ class SecurityClassService {
     fun getDefensiveMeasures(request: SecurityClassRequest): List<BasicDefensiveMeasure> {
         val securityClass = determineSecurityClass(request)
         return BasicDefensiveMeasure.findBySecurityClass(securityClass)
+    }
+
+    @Transactional
+    fun getDataSecurityTools(basicMeasuresIds: List<Long>): Map<BasicDefensiveMeasure, List<DataSecurityTool>> {
+        val mappings = DefensiveMeasureToDataSecTool.find("measure.id in (?1)", basicMeasuresIds).list()
+        return mappings.groupBy { it.measure!! }.mapValues { (_, mappingList) ->
+            mappingList.mapNotNull { it.securityTool }
+        }
     }
 }

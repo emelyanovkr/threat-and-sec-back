@@ -13,9 +13,11 @@ class BasicDefensiveMeasure(
     var key: String = "",
 
     @Column(nullable = false)
-    var name: String = ""
+    var name: String = "",
 
-) : PanacheEntityBase {
+    var description: String = "",
+
+    ) : PanacheEntityBase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
