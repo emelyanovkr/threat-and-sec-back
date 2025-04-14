@@ -1,9 +1,10 @@
 package org.threat.dto
 
+import org.threat.model.general.SystemCategory
 import org.threat.model.general.input.*
 
 data class SecurityClassRequest(
-    var systemCategory: SystemCategory? = null,
+    var systemCategory: SystemCategory = SystemCategory.NONE,
 
     var gisScale: GisScaleOptions? = null,
     var gisSignificance: GisSignificanceOptions? = null,

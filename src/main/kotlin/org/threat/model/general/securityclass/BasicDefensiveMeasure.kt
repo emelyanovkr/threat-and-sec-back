@@ -3,6 +3,7 @@ package org.threat.model.general.securityclass
 import io.quarkus.hibernate.orm.panache.kotlin.PanacheCompanion
 import io.quarkus.hibernate.orm.panache.kotlin.PanacheEntityBase
 import jakarta.persistence.*
+import org.threat.model.general.SystemCategory
 
 @Entity
 @Table(name = "basic_defensive_measures")
@@ -17,6 +18,10 @@ class BasicDefensiveMeasure(
 
     var description: String = "",
 
+    @Column(name = "system_category")
+    @Enumerated(EnumType.STRING)
+    var systemCategory: SystemCategory = SystemCategory.NONE,
+
     ) : PanacheEntityBase {
 
     @Id
@@ -24,13 +29,15 @@ class BasicDefensiveMeasure(
     var id: Long? = null
 
     companion object : PanacheCompanion<BasicDefensiveMeasure> {
-        fun findBySecurityClass(securityClass: Int): List<BasicDefensiveMeasure> {
+        fun findBySecurityClassAndSystemCategory(securityClass: Int, systemCategory: SystemCategory): List<BasicDefensiveMeasure> {
             return find(
                 "SELECT bdm " +
                         "FROM BasicDefensiveMeasure bdm " +
                         "JOIN DefensiveMeasureToSecurityClass dmsc " +
-                        "ON bdm = dmsc.measure WHERE dmsc.securityClass = ?1",
-                securityClass
+                        "ON bdm = dmsc.measure " +
+                        "WHERE dmsc.securityClass = :securityClass " +
+                        "AND bdm.systemCategory = :systemCategory",
+                mapOf("securityClass" to securityClass, "systemCategory" to systemCategory)
             ).list()
         }
     }

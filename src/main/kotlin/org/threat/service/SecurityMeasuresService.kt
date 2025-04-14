@@ -4,7 +4,7 @@ import jakarta.enterprise.context.ApplicationScoped
 import jakarta.transaction.Transactional
 import jakarta.ws.rs.NotFoundException
 import org.threat.dto.SecurityClassRequest
-import org.threat.model.general.input.SystemCategory
+import org.threat.model.general.SystemCategory
 import org.threat.model.general.securityclass.*
 
 @ApplicationScoped
@@ -43,7 +43,7 @@ class SecurityMeasuresService {
     @Transactional
     fun getDefensiveMeasures(request: SecurityClassRequest): List<BasicDefensiveMeasure> {
         val securityClass = determineSecurityClass(request)
-        return BasicDefensiveMeasure.findBySecurityClass(securityClass)
+        return BasicDefensiveMeasure.findBySecurityClassAndSystemCategory(securityClass, request.systemCategory)
     }
 
     @Transactional

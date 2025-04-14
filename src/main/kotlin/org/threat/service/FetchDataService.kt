@@ -5,7 +5,7 @@ import jakarta.transaction.Transactional
 import org.threat.excel.ExcelOperations
 import org.threat.exception.FetchThreatsException
 import org.threat.model.general.DataReplacementEntity
-import org.threat.model.general.input.SystemCategory
+import org.threat.model.general.SystemCategory
 import org.threat.model.general.SystemCategoryEntity
 import org.threat.model.tactics.TacticToTechnique
 import java.net.URI

@@ -1,6 +1,5 @@
 package org.threat.word
 
-import org.apache.poi.ss.formula.functions.T
 import org.docx4j.XmlUtils
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage
 import org.docx4j.wml.Tbl

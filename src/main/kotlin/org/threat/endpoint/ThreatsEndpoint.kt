@@ -30,20 +30,6 @@ class ThreatsEndpoint(
         val relevantThreats = relevantThreatsService.getRelevantThreats(influenceObjects)
         return Response.ok(relevantThreats).build()
     }
-
-    @GET
-    @Path("/fetch-threats")
-    @Produces(MediaType.APPLICATION_JSON)
-    fun fetchThreatsFromBank(): Response {
-        return try {
-            val fetchedThreats = fetchDataService.acquireActualThreats(FETCH_THREATS_URL_FROM_FSTEC)
-            Response.ok("Успешное обновление угроз - $fetchedThreats").build()
-        } catch (e: Exception) {
-            e.printStackTrace()
-            Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.message).build()
-        }
-    }
-
     @GET
     @Path("/fetch-tactics")
     @Produces(MediaType.APPLICATION_JSON)
@@ -72,5 +58,18 @@ class ThreatsEndpoint(
     @Produces(MediaType.APPLICATION_JSON)
     fun getDataSecurityTools(defensiveMeasuresIds: List<Long>): Response {
         return Response.ok(securityMeasuresService.getDataSecurityTools(defensiveMeasuresIds)).build()
+    }
+
+    @GET
+    @Path("/fetch-threats")
+    @Produces(MediaType.APPLICATION_JSON)
+    fun fetchThreatsFromBank(): Response {
+        return try {
+            val fetchedThreats = fetchDataService.acquireActualThreats(FETCH_THREATS_URL_FROM_FSTEC)
+            Response.ok("Успешное обновление угроз - $fetchedThreats").build()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.message).build()
+        }
     }
 }
