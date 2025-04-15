@@ -6,6 +6,7 @@ import jakarta.ws.rs.core.MediaType
 import jakarta.ws.rs.core.Response
 import org.threat.dto.SecurityClassRequest
 import org.threat.model.ThreatReport
+import org.threat.model.general.SystemCategory
 import org.threat.service.FetchDataService
 import org.threat.service.GenerateReportService
 import org.threat.service.RelevantThreatsService
@@ -22,6 +23,14 @@ class ThreatsEndpoint(
 
     private val FETCH_THREATS_URL_FROM_FSTEC = "https://bdu.fstec.ru/files/documents/thrlist.xlsx"
 
+    @GET
+    @Path("/risks-consequences")
+    @Produces(MediaType.APPLICATION_JSON)
+    fun getRisksAndConsequences(@QueryParam("systemCategory") systemCategory: SystemCategory): Response {
+        val risksAndConsequencesMap = fetchDataService.getRisksAndConsequences(systemCategory)
+        return Response.ok(risksAndConsequencesMap).build()
+    }
+
     @POST
     @Path("/relevant-threats")
     @Produces(MediaType.APPLICATION_JSON)
@@ -30,18 +39,12 @@ class ThreatsEndpoint(
         val relevantThreats = relevantThreatsService.getRelevantThreats(influenceObjects)
         return Response.ok(relevantThreats).build()
     }
-    @GET
-    @Path("/fetch-tactics")
-    @Produces(MediaType.APPLICATION_JSON)
-    fun fetchAllTacticsAndTechniques(): Response {
-        return Response.ok(fetchDataService.getAllTacticsAndTechniques()).build()
-    }
 
-    @POST
-    @Path("/generate-model-report")
-    fun generateModelReport(threatReport: ThreatReport): Response {
-        generateReportService.generateReport(threatReport)
-        return Response.ok().build()
+    @GET
+    @Path("/tactics-techniques")
+    @Produces(MediaType.APPLICATION_JSON)
+    fun getTacticsAndTechniques(): Response {
+        return Response.ok(fetchDataService.getAllTacticsAndTechniques()).build()
     }
 
     @POST
@@ -59,6 +62,14 @@ class ThreatsEndpoint(
     fun getDataSecurityTools(defensiveMeasuresIds: List<Long>): Response {
         return Response.ok(securityMeasuresService.getDataSecurityTools(defensiveMeasuresIds)).build()
     }
+
+    @POST
+    @Path("/generate-model-report")
+    fun generateModelReport(threatReport: ThreatReport): Response {
+        generateReportService.generateReport(threatReport)
+        return Response.ok().build()
+    }
+
 
     @GET
     @Path("/fetch-threats")
