@@ -2,6 +2,8 @@ package org.threat.util
 
 import jakarta.xml.bind.JAXBElement
 import org.docx4j.wml.ContentAccessor
+import org.threat.dto.ThreatReportDTO
+import org.threat.model.ThreatReport
 import kotlin.reflect.full.memberProperties
 
 object ReflectionUtils {

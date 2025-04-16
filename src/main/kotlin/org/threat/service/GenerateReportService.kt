@@ -5,14 +5,15 @@ import jakarta.enterprise.context.ApplicationScoped
 import org.docx4j.model.datastorage.migration.VariablePrepare
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage
 import org.docx4j.org.apache.xml.serializer.utils.ResourceUtils
+import org.threat.dto.ThreatReportDTO
 import org.threat.model.ThreatReport
 import org.threat.model.offenders.OffendersType
 import org.threat.model.threats.DataInsertionType
 import org.threat.model.threats.InfluenceObject
 import org.threat.model.threats.ThreatInfo
 import org.threat.util.ReflectionUtils.toMap
-import org.threat.word.ProceedOffendersInsert
 import org.threat.word.ProceedDataBulletedInsert
+import org.threat.word.ProceedOffendersInsert
 import org.threat.word.TablesProcessing
 import java.io.File
 import java.time.LocalDate
@@ -57,14 +58,13 @@ class GenerateReportService(var fetchDataService: FetchDataService) {
         return threatsCategoriesWithActualThreats.map { "${it.key.name} (${it.value.joinToString(", ") { threat -> "УБИ.${threat.id}" }})" }
     }
 
-    fun generateReport(threatReport: ThreatReport) {
+    fun generateReport(threatReportDTO: ThreatReportDTO) {
         val templateFile = ResourceUtils.getResource(TEMPLATE_FULL_NAME)
         val wordProcessingPackage = WordprocessingMLPackage.load(templateFile)
 
         VariablePrepare.prepare(wordProcessingPackage)
 
-        threatReport.actualChosenThreats =
-            ThreatInfo.find("id in ?1", threatReport.actualChosenThreats.map { it.id }).list()
+        val threatReport = fetchDataService.getThreatReportFromDTO(threatReportDTO)
 
         // обработка данных внутри таблиц
         TablesProcessing.replaceVariablesInTable(wordProcessingPackage, threatReport)

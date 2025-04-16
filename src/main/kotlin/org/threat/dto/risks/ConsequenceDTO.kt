@@ -1,6 +1,4 @@
-package org.threat.dto
-
-data class RiskDTO(val id: Long, val riskCode: String, val riskName: String, val consequences: Set<ConsequenceDTO>)
+package org.threat.dto.risks
 
 data class ConsequenceDTO(val id: Long, val title: String) {
     override fun equals(other: Any?): Boolean {

@@ -5,6 +5,7 @@ import jakarta.ws.rs.*
 import jakarta.ws.rs.core.MediaType
 import jakarta.ws.rs.core.Response
 import org.threat.dto.SecurityClassRequest
+import org.threat.dto.ThreatReportDTO
 import org.threat.model.ThreatReport
 import org.threat.model.general.SystemCategory
 import org.threat.service.FetchDataService
@@ -65,8 +66,8 @@ class ThreatsEndpoint(
 
     @POST
     @Path("/generate-model-report")
-    fun generateModelReport(threatReport: ThreatReport): Response {
-        generateReportService.generateReport(threatReport)
+    fun generateModelReport(threatReportDTO: ThreatReportDTO): Response {
+        generateReportService.generateReport(threatReportDTO)
         return Response.ok().build()
     }
 
