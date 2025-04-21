@@ -34,5 +34,4 @@ class TacticToTechnique(
     )
 
     companion object : PanacheCompanion<TacticToTechnique>
-
 }

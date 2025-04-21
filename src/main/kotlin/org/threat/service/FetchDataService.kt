@@ -5,6 +5,8 @@ import jakarta.transaction.Transactional
 import org.threat.dto.ThreatReportDTO
 import org.threat.dto.risks.ConsequenceDTO
 import org.threat.dto.risks.RiskDTO
+import org.threat.dto.tactics.TacticDTO
+import org.threat.dto.tactics.TechniqueDTO
 import org.threat.excel.ExcelOperations
 import org.threat.exception.FetchThreatsException
 import org.threat.model.ThreatReport
@@ -17,6 +19,7 @@ import org.threat.model.risks.Risk
 import org.threat.model.risks.RiskAndConsequenceDisplay
 import org.threat.model.tactics.TacticToTechnique
 import org.threat.model.threats.ThreatInfo
+import org.threat.model.threats.ThreatsExecutionMethod
 import java.net.URI
 import java.net.http.HttpClient
 import java.net.http.HttpRequest
@@ -25,13 +28,15 @@ import java.net.http.HttpResponse
 @ApplicationScoped
 class FetchDataService {
 
+    private val FIND_BY_ID_QUERY = "id in ?1"
+
     private fun getCategoryEntity(systemCategory: SystemCategory): SystemCategoryEntity? {
         return SystemCategoryEntity.find("name", systemCategory.name).firstResult()
     }
 
     @Transactional
     fun getRisksAndConsequences(systemCategory: SystemCategory): List<RiskDTO> {
-        val risks = Risk.listAll()
+        val risks = Risk.listAll().sortedBy { it.id }
 
         return risks.map { risk ->
             val consequences = Consequence.find(
@@ -39,7 +44,7 @@ class FetchDataService {
                         "FROM Consequence cons " +
                         "WHERE cons.risk = ?1 " +
                         "AND " +
-                        "cons.systemCategory = ?2 ",
+                        "cons.systemCategory = ?2",
                 risk,
                 getCategoryEntity(systemCategory)!!
             ).list().map { cons ->
@@ -59,13 +64,22 @@ class FetchDataService {
     }
 
     @Transactional
+    fun getOffenders(): List<Offenders> {
+        return Offenders.listAll().sortedBy { it.name }
+    }
+
+    fun getThreatsExecutionMethods(): List<ThreatsExecutionMethod> {
+        return ThreatsExecutionMethod.listAll().sortedBy { it.id }
+    }
+
+    @Transactional
     fun getThreatReportFromDTO(threatReportDTO: ThreatReportDTO): ThreatReport {
         val threatReport = ThreatReport()
         threatReport.generalInformation = threatReportDTO.generalInformation
         threatReport.networkTable = threatReportDTO.networkTable
 
         threatReport.risksAndConsequencesDisplay = threatReportDTO.risksAndConsequences.flatMap { riskSelection ->
-            Consequence.find("id in ?1", riskSelection.consequenceIds)
+            Consequence.find(FIND_BY_ID_QUERY, riskSelection.consequenceIds)
                 .list()
                 .map { consequence ->
                     RiskAndConsequenceDisplay(
@@ -78,13 +92,18 @@ class FetchDataService {
         }
 
         threatReport.influenceObjects = threatReportDTO.influenceObjects
-        threatReport.violatorsInformationChosen = threatReportDTO.violatorsInformationChosen
+
+        threatReport.violatorsInformationChosen =
+            Offenders.find(FIND_BY_ID_QUERY, threatReportDTO.violatorsInformationChosenIds).list()
+
         threatReport.violatorsInformationExcluded =
-            Offenders.find("name not in ?1", threatReportDTO.violatorsInformationChosen.map { it.name }).list()
-        threatReport.threatsExecutionMethods = threatReportDTO.threatsExecutionMethods
+            Offenders.find("id not in ?1", threatReportDTO.violatorsInformationChosenIds).list()
+
+        threatReport.threatsExecutionMethods =
+            ThreatsExecutionMethod.find(FIND_BY_ID_QUERY, threatReportDTO.threatsExecutionMethodsIds).list()
 
         threatReport.actualChosenThreats =
-            ThreatInfo.find("id in ?1", threatReportDTO.actualChosenThreats.map { it.id }).list()
+            ThreatInfo.find(FIND_BY_ID_QUERY, threatReportDTO.actualChosenThreatsIds).list()
 
         return threatReport
     }
@@ -113,5 +132,25 @@ class FetchDataService {
     }
 
     @Transactional
-    fun getAllTacticsAndTechniques(): List<TacticToTechnique> = TacticToTechnique.findAll().list()
+    fun getAllTacticsAndTechniques(): List<TacticDTO> {
+        val list: List<TacticToTechnique> = TacticToTechnique.findAll().list()
+        return list
+            .groupBy { it.tactic }
+            .map { (tactic, links) ->
+                TacticDTO(
+                    tacticId = tactic.id!!,
+                    tacticName = tactic.tacticName,
+                    tacticalTask = tactic.tacticalTask,
+                    techniques = links.map { link ->
+                        link.technique.let { tech ->
+                            TechniqueDTO(
+                                id = tech.id!!,
+                                techniqueNumber = tech.techniqueNumber,
+                                techniqueDescription = tech.techniqueDescription
+                            )
+                        }
+                    }
+                )
+            }
+    }
 }

@@ -6,7 +6,6 @@ import jakarta.ws.rs.core.MediaType
 import jakarta.ws.rs.core.Response
 import org.threat.dto.SecurityClassRequest
 import org.threat.dto.ThreatReportDTO
-import org.threat.model.ThreatReport
 import org.threat.model.general.SystemCategory
 import org.threat.service.FetchDataService
 import org.threat.service.GenerateReportService
@@ -30,6 +29,22 @@ class ThreatsEndpoint(
     fun getRisksAndConsequences(@QueryParam("systemCategory") systemCategory: SystemCategory): Response {
         val risksAndConsequencesMap = fetchDataService.getRisksAndConsequences(systemCategory)
         return Response.ok(risksAndConsequencesMap).build()
+    }
+
+    @GET
+    @Path("/offenders")
+    @Produces(MediaType.APPLICATION_JSON)
+    fun getOffenders(): Response {
+        val offenders = fetchDataService.getOffenders()
+        return Response.ok(offenders).build()
+    }
+
+    @GET
+    @Path("/threats-execution")
+    @Produces(MediaType.APPLICATION_JSON)
+    fun getThreatsExecutionMethods(): Response {
+        val executionMethods = fetchDataService.getThreatsExecutionMethods()
+        return Response.ok(executionMethods).build()
     }
 
     @POST
@@ -70,7 +85,6 @@ class ThreatsEndpoint(
         generateReportService.generateReport(threatReportDTO)
         return Response.ok().build()
     }
-
 
     @GET
     @Path("/fetch-threats")
