@@ -1,11 +1,16 @@
 package org.threat.service
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import io.quarkus.logging.Log
 import jakarta.enterprise.context.ApplicationScoped
+import jakarta.enterprise.inject.Default
+import jakarta.transaction.Transactional
 import org.docx4j.model.datastorage.migration.VariablePrepare
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage
 import org.docx4j.org.apache.xml.serializer.utils.ResourceUtils
+import org.eclipse.microprofile.config.inject.ConfigProperty
 import org.threat.dto.ThreatReportDTO
+import org.threat.model.ReportRequestHistory
 import org.threat.model.ThreatReport
 import org.threat.model.offenders.OffendersType
 import org.threat.model.threats.DataInsertionType
@@ -16,12 +21,20 @@ import org.threat.word.ProceedDataBulletedInsert
 import org.threat.word.ProceedOffendersInsert
 import org.threat.word.TablesProcessing
 import java.io.File
+import java.io.OutputStream
 import java.time.LocalDate
+import java.time.OffsetDateTime
 
 @ApplicationScoped
-class GenerateReportService(var fetchDataService: FetchDataService) {
-    private val TEMPLATE_NAME = "Template"
-    private val TEMPLATE_EXTENSION = ".docx"
+class GenerateReportService(
+    var fetchDataService: FetchDataService,
+    @ConfigProperty(name = "report.template-name", defaultValue = "model-report")
+    private val TEMPLATE_NAME: String,
+    @ConfigProperty(name = "report.template-extension", defaultValue = ".docx")
+    private val TEMPLATE_EXTENSION: String,
+    private val objectMapper: ObjectMapper
+) {
+
     private val TEMPLATE_FULL_NAME = TEMPLATE_NAME + TEMPLATE_EXTENSION
 
     private fun calculateParams(currentParams: Map<String, String>): Map<String, String> {
@@ -58,7 +71,11 @@ class GenerateReportService(var fetchDataService: FetchDataService) {
         return threatsCategoriesWithActualThreats.map { "${it.key.name} (${it.value.joinToString(", ") { threat -> "УБИ.${threat.id}" }})" }
     }
 
-    fun generateReport(threatReportDTO: ThreatReportDTO) {
+    /*
+        ${riskCode}:List<Consequences> split by .
+     */
+    @Transactional
+    fun generateReport(threatReportDTO: ThreatReportDTO, outputStream: OutputStream, persistGeneratedReport: Boolean) {
         val templateFile = ResourceUtils.getResource(TEMPLATE_FULL_NAME)
         val wordProcessingPackage = WordprocessingMLPackage.load(templateFile)
 
@@ -98,11 +115,25 @@ class GenerateReportService(var fetchDataService: FetchDataService) {
         // замена остальных параметров по всему документу
         wordProcessingPackage.mainDocumentPart.variableReplace(overallDataParamsMap)
 
+        // todo: temporary for debugging
         val outputFile = File("src/main/resources/generated/${TEMPLATE_NAME}_${LocalDate.now()}$TEMPLATE_EXTENSION")
         if (!outputFile.parentFile.exists()) {
             outputFile.parentFile.mkdirs()
         }
         Log.info("File successfully generated ${outputFile.absolutePath}")
         wordProcessingPackage.save(outputFile)
+        wordProcessingPackage.save(outputStream)
+
+        if (persistGeneratedReport) {
+            val reportRequestJson = objectMapper.writeValueAsString(threatReportDTO)
+            val reportRequest =
+                ReportRequestHistory(
+                    OffsetDateTime.now(),
+                    reportRequestJson,
+                    threatReportDTO.generalInformation.category
+                )
+            reportRequest.persist()
+            Log.info("Saving report to history: ${reportRequest.id}")
+        }
     }
 }

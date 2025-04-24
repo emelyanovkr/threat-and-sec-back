@@ -21,6 +21,9 @@ dependencies {
     implementation("io.quarkus:quarkus-resteasy-jackson")
     implementation("io.quarkus:quarkus-hibernate-orm-panache-kotlin")
 
+    // jackson for kotlin support
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.18.3")
+
     // .docx, .xlsx
     implementation("org.docx4j:docx4j-core:11.5.2")
     implementation("org.docx4j:docx4j-JAXB-ReferenceImpl:11.5.2")

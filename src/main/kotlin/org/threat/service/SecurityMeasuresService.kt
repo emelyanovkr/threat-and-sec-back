@@ -20,19 +20,19 @@ class SecurityMeasuresService {
             }
 
             SystemCategory.ISPDN -> {
-                requireNotNull(request.pdCategory) { "ИСПДН: необходимо указать категорию ИСПДН" }
-                requireNotNull(request.ownWorker) { "ИСПДН: необходимо указать собственный работник или нет" }
-                requireNotNull(request.subjectCount) { "ИСПДН: необходимо указать количество субъектов" }
-                requireNotNull(request.threatType) { "ИСПДН: необходимо указать тип актуальных угроз" }
+                requireNotNull(request.ispdnCategory) { "ИСПДН: необходимо указать категорию ИСПДН" }
+                requireNotNull(request.ispdnOwnWorker) { "ИСПДН: необходимо указать собственный работник или нет" }
+                requireNotNull(request.ispdnSubjectCount) { "ИСПДН: необходимо указать количество субъектов" }
+                requireNotNull(request.ispdnThreatType) { "ИСПДН: необходимо указать тип актуальных угроз" }
                 IspdnSecurityClass.findByOptions(
-                    request.pdCategory!!, request.ownWorker!!, request.subjectCount!!, request.threatType!!
+                    request.ispdnCategory!!, request.ispdnOwnWorker!!, request.ispdnSubjectCount!!, request.ispdnThreatType!!
                 )?.securityClass
-                    ?: throw IllegalArgumentException("не найден класс защищенности для ИСПДн с параметрами ${request.pdCategory} / ${request.ownWorker} / ${request.subjectCount} / ${request.threatType}")
+                    ?: throw IllegalArgumentException("не найден класс защищенности для ИСПДн с параметрами ${request.ispdnCategory} / ${request.ispdnOwnWorker} / ${request.ispdnSubjectCount} / ${request.ispdnThreatType}")
             }
 
             SystemCategory.KII -> {
-                requireNotNull(request.kiiSecurityClass) { "КИИ: необходимо указать полученный класс защищенности" }
-                request.kiiSecurityClass!!
+                requireNotNull(request.kiiSignificanceCategory) { "КИИ: необходимо указать полученную категорию значимости" }
+                request.kiiSignificanceCategory!!
             }
 
             else -> throw IllegalArgumentException("неверно указан тип информационной системы: ${request.systemCategory}")

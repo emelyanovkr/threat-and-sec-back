@@ -13,3 +13,6 @@ quarkus.hibernate-orm.database.default-schema=
 
 quarkus.log.category."org.docx4j.model.datastorage.migration.VariablePrepare".level=WARN
 quarkus.log.console.format=%d{yyyy-MM-dd HH:mm:ss} %-5p [%c{1.}] (%t) %s%e%n
+
+report.template-name=Template
+report.template-extension=.docx

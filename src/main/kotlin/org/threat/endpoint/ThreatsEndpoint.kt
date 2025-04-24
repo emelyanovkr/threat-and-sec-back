@@ -5,10 +5,8 @@ import jakarta.ws.rs.*
 import jakarta.ws.rs.core.MediaType
 import jakarta.ws.rs.core.Response
 import org.threat.dto.SecurityClassRequest
-import org.threat.dto.ThreatReportDTO
 import org.threat.model.general.SystemCategory
 import org.threat.service.FetchDataService
-import org.threat.service.GenerateReportService
 import org.threat.service.RelevantThreatsService
 import org.threat.service.SecurityMeasuresService
 
@@ -17,7 +15,6 @@ import org.threat.service.SecurityMeasuresService
 class ThreatsEndpoint(
     private val fetchDataService: FetchDataService,
     private val relevantThreatsService: RelevantThreatsService,
-    private val generateReportService: GenerateReportService,
     private val securityMeasuresService: SecurityMeasuresService,
 ) {
 
@@ -77,13 +74,6 @@ class ThreatsEndpoint(
     @Produces(MediaType.APPLICATION_JSON)
     fun getDataSecurityTools(defensiveMeasuresIds: List<Long>): Response {
         return Response.ok(securityMeasuresService.getDataSecurityTools(defensiveMeasuresIds)).build()
-    }
-
-    @POST
-    @Path("/generate-model-report")
-    fun generateModelReport(threatReportDTO: ThreatReportDTO): Response {
-        generateReportService.generateReport(threatReportDTO)
-        return Response.ok().build()
     }
 
     @GET

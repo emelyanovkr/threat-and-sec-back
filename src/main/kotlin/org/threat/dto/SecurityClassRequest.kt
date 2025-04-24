@@ -9,10 +9,10 @@ data class SecurityClassRequest(
     var gisScale: GisScaleOptions? = null,
     var gisSignificance: GisSignificanceOptions? = null,
 
-    var pdCategory: IspdnCategoryOptions? = null,
-    var ownWorker: IspdnOwnWorkerOptions? = null,
-    var subjectCount: IspdnSubjectCountOptions? = null,
-    var threatType: IspdnThreatTypeOptions? = null,
+    var ispdnCategory: IspdnCategoryOptions? = null,
+    var ispdnOwnWorker: IspdnOwnWorkerOptions? = null,
+    var ispdnSubjectCount: IspdnSubjectCountOptions? = null,
+    var ispdnThreatType: IspdnThreatTypeOptions? = null,
 
-    var kiiSecurityClass: Int? = null,
+    var kiiSignificanceCategory: Int? = null,
 )
