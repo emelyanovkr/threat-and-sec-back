@@ -7,11 +7,11 @@ import jakarta.persistence.*
 @Entity
 @Table(name = "offenders")
 @SequenceGenerator(name = "offenders_seq", sequenceName = "offenders_id_seq")
-class Offenders(var name: String = "") : PanacheEntityBase {
+class Offender(var name: String = "", var category: String = "") : PanacheEntityBase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
 
-    companion object : PanacheCompanion<Offenders>
+    companion object : PanacheCompanion<Offender>
 }

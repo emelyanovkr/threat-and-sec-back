@@ -2,6 +2,7 @@ package org.threat.service
 
 import jakarta.enterprise.context.ApplicationScoped
 import jakarta.transaction.Transactional
+import org.threat.dto.OffenderInfoDTO
 import org.threat.dto.ThreatReportDTO
 import org.threat.dto.risks.ConsequenceDTO
 import org.threat.dto.risks.RiskDTO
@@ -11,10 +12,10 @@ import org.threat.excel.ExcelOperations
 import org.threat.exception.FetchThreatsException
 import org.threat.model.ThreatReport
 import org.threat.model.general.DataReplacementEntity
-import org.threat.model.general.GeneralInformation
 import org.threat.model.general.SystemCategory
 import org.threat.model.general.SystemCategoryEntity
-import org.threat.model.offenders.Offenders
+import org.threat.model.offenders.Offender
+import org.threat.model.offenders.OffendersPowerLevelToOffender
 import org.threat.model.risks.Consequence
 import org.threat.model.risks.Risk
 import org.threat.model.risks.RiskAndConsequenceDisplay
@@ -65,8 +66,20 @@ class FetchDataService {
     }
 
     @Transactional
-    fun getOffenders(): List<Offenders> {
-        return Offenders.listAll().sortedBy { it.name }
+    fun getOffenders(): List<OffenderInfoDTO> {
+
+        return Offender.listAll().map { offender ->
+            val link = OffendersPowerLevelToOffender.find("offender", offender).firstResult()
+
+            val levelName = link?.powerLevel?.levelName
+
+            OffenderInfoDTO(
+                id = offender.id!!,
+                name = offender.name,
+                category = offender.category,
+                powerLevelName = levelName,
+            )
+        }
     }
 
     fun getThreatsExecutionMethods(): List<ThreatsExecutionMethod> {
@@ -95,10 +108,10 @@ class FetchDataService {
         threatReport.influenceObjects = threatReportDTO.influenceObjects
 
         threatReport.violatorsInformationChosen =
-            Offenders.find(FIND_BY_ID_QUERY, threatReportDTO.violatorsInformationChosenIds).list()
+            Offender.find(FIND_BY_ID_QUERY, threatReportDTO.violatorsInformationChosenIds).list()
 
         threatReport.violatorsInformationExcluded =
-            Offenders.find("id not in ?1", threatReportDTO.violatorsInformationChosenIds).list()
+            Offender.find("id not in ?1", threatReportDTO.violatorsInformationChosenIds).list()
 
         threatReport.threatsExecutionMethods =
             ThreatsExecutionMethod.find(FIND_BY_ID_QUERY, threatReportDTO.threatsExecutionMethodsIds).list()

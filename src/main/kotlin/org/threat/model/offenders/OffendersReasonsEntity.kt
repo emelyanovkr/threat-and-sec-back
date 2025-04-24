@@ -11,7 +11,7 @@ class OffendersReasonsEntity(
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "offender", nullable = false)
-    var offender: Offenders? = null,
+    var offender: Offender? = null,
 
     @Column(nullable = false)
     var reason: String = ""
