@@ -3,6 +3,7 @@ package org.threat.service
 import jakarta.enterprise.context.ApplicationScoped
 import jakarta.transaction.Transactional
 import jakarta.ws.rs.NotFoundException
+import org.threat.dto.DefensiveMeasureDTO
 import org.threat.dto.SecurityClassRequest
 import org.threat.model.general.SystemCategory
 import org.threat.model.general.securityclass.*
@@ -25,7 +26,10 @@ class SecurityMeasuresService {
                 requireNotNull(request.ispdnSubjectCount) { "ИСПДН: необходимо указать количество субъектов" }
                 requireNotNull(request.ispdnThreatType) { "ИСПДН: необходимо указать тип актуальных угроз" }
                 IspdnSecurityClass.findByOptions(
-                    request.ispdnCategory!!, request.ispdnOwnWorker!!, request.ispdnSubjectCount!!, request.ispdnThreatType!!
+                    request.ispdnCategory!!,
+                    request.ispdnOwnWorker!!,
+                    request.ispdnSubjectCount!!,
+                    request.ispdnThreatType!!
                 )?.securityClass
                     ?: throw IllegalArgumentException("не найден класс защищенности для ИСПДн с параметрами ${request.ispdnCategory} / ${request.ispdnOwnWorker} / ${request.ispdnSubjectCount} / ${request.ispdnThreatType}")
             }
@@ -41,9 +45,11 @@ class SecurityMeasuresService {
     }
 
     @Transactional
-    fun getDefensiveMeasures(request: SecurityClassRequest): List<BasicDefensiveMeasure> {
+    fun getDefensiveMeasures(request: SecurityClassRequest): DefensiveMeasureDTO {
         val securityClass = determineSecurityClass(request)
-        return BasicDefensiveMeasure.findBySecurityClassAndSystemCategory(securityClass, request.systemCategory)
+        val basicDefensiveMeasures =
+            BasicDefensiveMeasure.findBySecurityClassAndSystemCategory(securityClass, request.systemCategory)
+        return DefensiveMeasureDTO(securityClass, basicDefensiveMeasures)
     }
 
     @Transactional
