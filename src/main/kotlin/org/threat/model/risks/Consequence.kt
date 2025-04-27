@@ -6,7 +6,7 @@ import jakarta.persistence.*
 import org.threat.model.general.SystemCategoryEntity
 
 @Entity
-@Table(name = "consequences")
+@Table(name = "consequences", schema = "threat_and_sec_schema")
 @SequenceGenerator(name = "consequences_seq", sequenceName = "consequences_id_seq")
 class Consequence(
 

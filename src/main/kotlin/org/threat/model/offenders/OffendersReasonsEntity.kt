@@ -5,7 +5,7 @@ import io.quarkus.hibernate.orm.panache.kotlin.PanacheEntityBase
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "offenders_reasons")
+@Table(name = "offenders_reasons", schema = "offenders_schema")
 @SequenceGenerator(name = "offender_reasons_seq", sequenceName = "offenders_reasons_id_seq")
 class OffendersReasonsEntity(
 

@@ -7,7 +7,7 @@ import jakarta.persistence.*
 
 @JsonPropertyOrder("id", "name", "description")
 @Entity
-@Table(name = "threats_info")
+@Table(name = "threats_info", schema = "threat_and_sec_schema")
 class ThreatInfo(
     var name: String = "",
     var description: String = ""

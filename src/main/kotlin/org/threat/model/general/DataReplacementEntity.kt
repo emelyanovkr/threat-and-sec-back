@@ -5,7 +5,7 @@ import io.quarkus.hibernate.orm.panache.kotlin.PanacheEntityBase
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "data_replacements")
+@Table(name = "data_replacements", schema = "report_generation_data_schema")
 @SequenceGenerator(name = "data_replacements_seq", sequenceName = "data_replacements_id_seq")
 class DataReplacementEntity(
 

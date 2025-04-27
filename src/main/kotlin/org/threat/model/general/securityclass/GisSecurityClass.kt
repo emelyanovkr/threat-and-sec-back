@@ -8,7 +8,7 @@ import org.threat.model.general.input.GisSignificanceOptions
 
 
 @Entity
-@Table(name = "gis_security_class")
+@Table(name = "gis_security_class", schema = "defensive_measures_schema")
 @SequenceGenerator(name = "gis_security_class_seq", sequenceName = "gis_security_class_id_seq")
 class GisSecurityClass(
 

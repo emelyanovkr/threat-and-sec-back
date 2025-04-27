@@ -6,7 +6,7 @@ import jakarta.persistence.*
 import org.threat.model.general.SystemCategory
 
 @Entity
-@Table(name = "basic_defensive_measures")
+@Table(name = "basic_defensive_measures", schema = "defensive_measures_schema")
 @SequenceGenerator(name = "basic_def_meas_seq", sequenceName = "basic_defensive_measures_id_seq")
 class BasicDefensiveMeasure(
 

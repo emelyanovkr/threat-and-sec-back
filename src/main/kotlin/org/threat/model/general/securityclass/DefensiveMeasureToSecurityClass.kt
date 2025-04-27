@@ -5,7 +5,7 @@ import io.quarkus.hibernate.orm.panache.kotlin.PanacheEntityBase
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "defensive_measures_to_security_class")
+@Table(name = "defensive_measures_to_security_class", schema = "defensive_measures_schema")
 @IdClass(DefensiveMeasureToSecurityClassId::class)
 class DefensiveMeasureToSecurityClass(
 

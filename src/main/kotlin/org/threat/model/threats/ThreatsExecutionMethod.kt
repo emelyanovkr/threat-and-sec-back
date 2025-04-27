@@ -10,7 +10,7 @@ import jakarta.persistence.SequenceGenerator
 import jakarta.persistence.Table
 
 @Entity
-@Table(name="threats_execution_methods")
+@Table(name="threats_execution_methods", schema = "threat_and_sec_schema")
 @SequenceGenerator(name = "threats_exec_seq", sequenceName = "threats_execution_methods_id_seq")
 data class ThreatsExecutionMethod(var name: String = "") : PanacheEntityBase {
 

@@ -5,7 +5,7 @@ import io.quarkus.hibernate.orm.panache.kotlin.PanacheEntityBase
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "basic_defensive_measures_to_data_security_tools")
+@Table(name = "basic_defensive_measures_to_data_security_tools", schema = "defensive_measures_schema")
 @IdClass(DefensiveMeasureToDataSecToolId::class)
 class DefensiveMeasureToDataSecTool(
     @Id

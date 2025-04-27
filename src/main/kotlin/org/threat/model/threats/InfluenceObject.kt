@@ -6,7 +6,7 @@ import jakarta.persistence.Entity
 import jakarta.persistence.Table
 
 @Entity
-@Table(name = "influence_objects")
+@Table(name = "influence_objects", schema = "threat_and_sec_schema")
 class InfluenceObject(var name: String = "", var alias: String = "") : PanacheEntity() {
     companion object : PanacheCompanion<InfluenceObject> {
         fun findByNameOrAlias(name: String): InfluenceObject? {

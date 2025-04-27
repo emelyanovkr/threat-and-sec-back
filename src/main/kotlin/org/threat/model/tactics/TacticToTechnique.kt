@@ -5,7 +5,7 @@ import io.quarkus.hibernate.orm.panache.kotlin.PanacheEntityBase
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "tactics_to_techniques")
+@Table(name = "tactics_to_techniques", schema ="tactics_techniques_schema")
 class TacticToTechnique(
     @EmbeddedId
     var id: TacticToTechniqueId,

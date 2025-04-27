@@ -11,7 +11,7 @@ import jakarta.persistence.SequenceGenerator
 import jakarta.persistence.Table
 
 @Entity
-@Table(name = "offenders_power_levels")
+@Table(name = "offenders_power_levels", schema = "offenders_schema")
 @SequenceGenerator(
     name = "offenders_power_levels_seq",
     sequenceName = "offenders_power_levels_id_seq"

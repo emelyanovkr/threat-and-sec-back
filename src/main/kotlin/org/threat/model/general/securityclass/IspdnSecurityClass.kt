@@ -9,7 +9,7 @@ import org.threat.model.general.input.IspdnSubjectCountOptions
 import org.threat.model.general.input.IspdnThreatTypeOptions
 
 @Entity
-@Table(name = "ispdn_security_class")
+@Table(name = "ispdn_security_class", schema = "defensive_measures_schema")
 @SequenceGenerator(name = "ispdn_security_class_seq", sequenceName = "ispdn_security_class_id_seq")
 class IspdnSecurityClass(
 

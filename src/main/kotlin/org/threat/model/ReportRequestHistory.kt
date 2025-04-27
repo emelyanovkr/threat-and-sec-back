@@ -10,7 +10,7 @@ import org.threat.model.general.SystemCategory
 import java.time.OffsetDateTime
 
 @Entity
-@Table(name = "report_request_history")
+@Table(name = "report_request_history", schema = "report_generation_data_schema")
 @SequenceGenerator(name = "report_request_id_seq", sequenceName = "report_request_history_id_seq")
 class ReportRequestHistory(
     @ColumnDefault("now()")

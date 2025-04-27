@@ -5,7 +5,7 @@ import io.quarkus.hibernate.orm.panache.kotlin.PanacheEntityBase
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "offenders_power_levels_to_offenders")
+@Table(name = "offenders_power_levels_to_offenders", schema = "offenders_schema")
 @IdClass(OffenderPowerLevelToOffenderId::class)
 class OffendersPowerLevelToOffender(
 

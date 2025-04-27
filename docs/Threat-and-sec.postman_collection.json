@@ -1,0 +1,313 @@
+{
+	"info": {
+		"_postman_id": "45cdd0d6-42b2-4cbf-a357-73c4f11df5cc",
+		"name": "Threat-and-sec",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26689131"
+	},
+	"item": [
+		{
+			"name": "Fetch New Threats",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8000/api/fetch-threats",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"fetch-threats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Relevant Threats",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\"Прикладное ПО\", \"Сетевое ПО\"]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8000/api/relevant-threats",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"relevant-threats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Tactics And Techniques",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8000/api/tactics-techniques",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"tactics-techniques"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Risks And Consequences",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8000/api/risks-consequences?systemCategory=KII",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"risks-consequences"
+					],
+					"query": [
+						{
+							"key": "systemCategory",
+							"value": "KII"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Generate Model Report",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"generalInformation\": {\r\n        \"customerName\": \"1\",\r\n        \"category\": \"ISPDN\",\r\n        \"pdnCategory\": \"SPECIAL\",\r\n        \"ownWorker\": \"YES\",\r\n        \"subjectCount\": \"MORE100\",\r\n        \"threatType\": \"FIRST\"\r\n    },\r\n    \"networkTable\": [\r\n        {\r\n            \"systemName\": \"УПРАВЛЕНИЕ МАШИНАМИ\",\r\n            \"systemPurpose\": \"Ведение бухгалтеров и прочих работников\",\r\n            \"userCategories\": \"Бухгалтерия, департамент по работе с персоналом\",\r\n            \"systemPriority\": \"HIGH\",\r\n            \"userCount\": \"500\",\r\n            \"systemPosition\": \"ЦОД1\"\r\n        },\r\n        {\r\n            \"systemName\": \"АВТОБОТЫ, ОБЩИЙ СБОР\",\r\n            \"systemPurpose\": \"Ведение соцработников\",\r\n            \"userCategories\": \"Департамент социального обеспечения граждан\",\r\n            \"systemPriority\": \"MINIMAL\",\r\n            \"userCount\": \"1500\",\r\n            \"systemPosition\": \"ЦОД50\"\r\n        }\r\n    ],\r\n    \"influenceObjects\": [\r\n        {\r\n            \"objectName\": \"Объект1\",\r\n            \"applies\": true\r\n        },\r\n        {\r\n            \"objectName\": \"Объект2\",\r\n            \"applies\": false\r\n        },\r\n        {\r\n            \"objectName\": \"Объект3\",\r\n            \"applies\": false\r\n        }\r\n    ],\r\n    \"risksAndConsequences\": [\r\n        {\r\n            \"riskId\": 1,\r\n            \"consequenceIds\": [\r\n                49,\r\n                56,\r\n                57\r\n            ]\r\n        },\r\n        {\r\n            \"riskId\": 2,\r\n            \"consequenceIds\": [\r\n                60,\r\n                61,\r\n                62,\r\n                63\r\n            ]\r\n        },\r\n        {\r\n            \"riskId\": 3,\r\n            \"consequenceIds\": [\r\n                88,\r\n                89,\r\n                92,\r\n                94\r\n            ]\r\n        }\r\n    ],\r\n    \"violatorsInformationChosenIds\": [\r\n        1,\r\n        2,\r\n        3\r\n    ],\r\n    \"threatsExecutionMethodsIds\": [\r\n        10,\r\n        12,\r\n        2\r\n    ],\r\n    \"actualChosenThreatsIds\": [\r\n        1,\r\n        20,\r\n        100,\r\n        220\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8000/api/generate-model-report",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"generate-model-report"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Devensive Measures",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"systemCategory\": \"ISPDN\",\r\n    \"ispdnCategory\": \"SPECIAL\",\r\n    \"ispdnOwnWorker\": \"NO\",\r\n    \"ispdnSubjectCount\": \"LESS100\",\r\n    \"ispdnThreatType\": \"FIRST\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8000/api/defensive-measures",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"defensive-measures"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Data Security Tools",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[1, 5, 9, 10, 50]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8000/api/security-tools",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"security-tools"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Offenders",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8000/api/offenders",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"offenders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Threats Execution Methods",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8000/api/threats-execution",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"threats-execution"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Reports History",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8000/api/reports-history",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"reports-history"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Single Report",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8000/api/delete-report?reportId=15",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"delete-report"
+					],
+					"query": [
+						{
+							"key": "reportId",
+							"value": "15"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Download Report By Id",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8000/api/download-report?reportId=8",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"download-report"
+					],
+					"query": [
+						{
+							"key": "reportId",
+							"value": "8"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

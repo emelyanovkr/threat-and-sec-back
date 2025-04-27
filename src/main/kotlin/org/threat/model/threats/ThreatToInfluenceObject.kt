@@ -5,7 +5,7 @@ import io.quarkus.hibernate.orm.panache.kotlin.PanacheEntityBase
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "threats_to_influence_objects")
+@Table(name = "threats_to_influence_objects", schema = "threat_and_sec_schema")
 data class ThreatToInfluenceObject(
     @EmbeddedId
     var id: ThreatToInfluenceId,

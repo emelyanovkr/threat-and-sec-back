@@ -4,7 +4,7 @@ import io.quarkus.hibernate.orm.panache.kotlin.PanacheEntityBase
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "main_techniques")
+@Table(name = "main_techniques", schema ="tactics_techniques_schema")
 @SequenceGenerator(name = "main_techniques_seq", sequenceName = "main_techniques_id_esq")
 class MainTechnique(
     @Column(name="technique_number" ,nullable = false)

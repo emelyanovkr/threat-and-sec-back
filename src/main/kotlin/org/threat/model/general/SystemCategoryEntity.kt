@@ -7,7 +7,7 @@ import jakarta.persistence.Entity
 import jakarta.persistence.Table
 
 @Entity
-@Table(name = "system_categories")
+@Table(name = "system_categories", schema = "threat_and_sec_schema")
 class SystemCategoryEntity(
     @Column(unique = true, nullable = false)
     var name: String = ""
